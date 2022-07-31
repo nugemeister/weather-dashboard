@@ -4,4 +4,10 @@ body {
     line-height: 1;
   }
 
-  
+header {
+    background-color: rgb(162, 218, 253);
+  }
+
+#UserCityInput, #countries, #states, #userCitySearchButton {
+    width: 250px;
+}
