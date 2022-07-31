@@ -26,14 +26,17 @@ var geoLocation = "";
 var searchHistoryList = [];
 
 // Initial Page Load
+pageLoad();
+
 // Pulling History from Local Storage
-localStorage.getItem('search-history') {
-    searchHistoryList = JSON.parse(localStorage.getItem('search-history'));
-    console.log(searchHistoryList);
-}
+// localStorage.getItem('search-history') {
+//     searchHistoryList = JSON.parse(localStorage.getItem('search-history'));
+//     console.log(searchHistoryList);
+// }
+
 // Rendering History from Local Storage
-searchHistoryEl.html(rendorHistory());
-console.log(searchHistoryEl);
+// searchHistoryEl.html(rendorHistory());
+// console.log(searchHistoryEl);
 
 // Event Listener for Initial City Search
 userCitySearchButtonEl.on("click", function(event) {
@@ -49,7 +52,68 @@ userCitySearchButtonEl.on("click", function(event) {
     generateCoordinates();
 });
 
-// Function to search for and return the geo coordinates of searched city
+// Event listener for pulling historical search data
+searchHistoryEl.on("click", function(event) {
+    if (event.target.matches(".btn")) {
+        // Pulls geo location
+        geoLocation = event.target.dataset.loc;
+        // Pulls city text
+        cityLocation = event.target.value;
+        // Find the info in the weather history array
+        var indexOfObject = searchHistoryList.findIndex(object => {
+            return object.geo === geoLocation;
+          });
+        // Button clicked is removed from history list and then re-added to move it to top of the list
+        searchHistoryList.splice(indexOfObject, 1);
+        addCityToHistory();
+        // Run the function to search for the geo coordinates
+        generateCoordinates();
+    }
+});
+
+// Master function to load the intial web page
+function pageLoad() {
+    // Add search history to the page
+    showSearchHistory();
+};
+
+// Creating the historic search array / list
+function addCityToHistory () {
+    // Adding new item to list
+    if (!searchHistoryList.some(e => e.geo === geoLocation)) {
+        var historyItem = {
+            geo: geoLocation
+        };
+    searchHistoryList.unshift(historyItem);
+    // Setting param for history list length to 10
+    if (searchHistoryList.length > 10) {
+        searchHistoryList.length = 10;
+    }
+    // Store the history to local storage
+    localStorage.setItem("searchHistoryList", JSON.stringify(searchHistoryList));
+    // Print search history to page
+    showSearchHistory();
+    }
+};
+
+// Show the historic search results on home page
+function showSearchHistory() {
+    var storedCities = JSON.parse(localStorage.getItem("searchHistoryList"));
+    if (storedCities !== null) {
+        searchHistoryList = storedCities;
+        searchHistoryEl.html("");
+        // Show each historical record
+        searchHistoryList.forEach(function (historyItem) {
+            searchHistoryEl.append(`
+            <div class="col-5 col-md-4 col-lg-10 my-1 px-2">
+            <input class="btn btn-secondary col-12" type="button" data-loc="${historyItem.geo}">
+            </div>
+            `);
+        })
+    }
+};
+
+// Function to search for and return the coordinates of searched city using Geocoding API
 function generateCoordinates() {
     // Call Geocoding API for entered city and / or historical search entries
     fetch(`${apiCoordinateURL}?q=${geoLocation}&appid=${apiKey}`)
@@ -66,6 +130,7 @@ function generateCoordinates() {
             addCityToHisory();
             getWeatherData(data[0].lat, data[0].lon);
         }
+        console.log(data);
     })
 };
 
@@ -111,7 +176,7 @@ function printWeatherData(current, daily, timezone) {
     forecastWeatherEl.html("");
     // Print to page
     forecastWeatherEl.append(`
-        <h3 class="text-center">Upcoming Weather Forecast:</h3>
+        <h3 class="text-center">5-Day Forecast:</h3>
         <div class="d-flex flex-wrap justify-content-evenly" id="forecastWeather">
     `);
     var forecastWeatherEl = $("#forecastWeather");
