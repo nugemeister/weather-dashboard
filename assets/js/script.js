@@ -11,6 +11,7 @@ var userCitySearchButtonEl = $("#userCitySearchButton");
 var searchHistoryEl = $("#searchHistory");
 var currentWeatherEl = $("#currentWeather");
 var forecastWeatherEl = $("#forecastWeather");
+var DateTime = luxon.DateTime;
 
 // API Info for Current + Forecast Weather
 var apiKey = "ddaeddc476ffe0c412f2543004ba0f76";
@@ -127,7 +128,7 @@ function generateCoordinates() {
             return;
         // For a successful city search, save the city to local storage / history and send the coordinates to the getWeatherData function
         } else {
-            addCityToHisory();
+            addCityToHistory();
             getWeatherData(data[0].lat, data[0].lon);
         }
         console.log(data);

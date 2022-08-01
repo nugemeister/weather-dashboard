@@ -37,6 +37,6 @@ The following link takes you to the deployed application: https://nugemeister.gi
 
 The following image shows the web application's appearance and functionality:
 
-![This is a screenshot of the live webpage.](./assets/06-server-side-apis-homework-demo.png)
+![This is a screenshot of the live webpage.](./assets/images/06-server-side-apis-homework-demo.png)
 <br></br>
 
