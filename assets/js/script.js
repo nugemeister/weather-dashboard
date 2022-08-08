@@ -107,7 +107,7 @@ function showSearchHistory() {
         searchHistoryList.forEach(function (historyItem) {
             searchHistoryEl.append(`
             <div class="px-2 col-lg-8 my-2 col-4 col-md-3">
-            <input class="btn btn-secondary col-10" type="button" data-loc="${historyItem.geo}">
+            <input class="btn btn-secondary col-10" type="button" data-loc="${historyItem.geo}" value="${historyItem.geo}">
             </div>
             `);
         })
@@ -180,8 +180,9 @@ function printWeatherData(current, daily, timezone) {
         <h3 class="text-center">5-Day Forecast:</h3>
         <div class="d-flex justify-content-evenly flex-wrap" id="forecastWeather">
     `);
+    var forecastEl = $("#forecastWeather")
     for (var i = 1; i < 6; i++) {
-        forecastWeatherEl.append(`
+        forecastEl.append(`
             <div class="bg-secondary col-md-4 col-8 m-0 p-2 text-center">
             <p class="fw-bold mt-1" style="line-height:.3">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("EEEE")}</p>
             <p class="fw-bold" style="line-height:.3">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("(M/d/yy)")}</p>
