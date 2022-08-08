@@ -106,8 +106,8 @@ function showSearchHistory() {
         // Show each historical record
         searchHistoryList.forEach(function (historyItem) {
             searchHistoryEl.append(`
-            <div class="col-5 col-md-4 col-lg-10 my-1 px-2">
-            <input class="btn btn-secondary col-12" type="button" data-loc="${historyItem.geo}">
+            <div class="px-2 col-lg-8 my-2 col-4 col-md-3">
+            <input class="btn btn-secondary col-10" type="button" data-loc="${historyItem.geo}">
             </div>
             `);
         })
@@ -159,10 +159,10 @@ function printWeatherData(current, daily, timezone) {
     // Weather description
     var currentWeatherDescription = current.weather[0].description;
     // Style output
-    currentWeatherEl.addClass("border border-3 border-dark rounded");
+    currentWeatherEl.addClass("border-light rounded border border-5 ");
     // Print to page
     currentWeatherEl.append(`
-        <h2 class="text-center mb-0 mb-md-4">${geoLocation} (${currentDate})</h2>
+        <h2 class="text-center mb-md-8">${geoLocation} (${currentDate})</h2>
         <h3 class="tex-center>Current Time: ${DateTime.fromSeconds(current.dt, {zone: timezone}).toFormat("h:mma")}</h3>
         <div class="row justify-content-center">
             <div class="col-auto">
@@ -178,14 +178,13 @@ function printWeatherData(current, daily, timezone) {
     // Print to page
     forecastWeatherEl.append(`
         <h3 class="text-center">5-Day Forecast:</h3>
-        <div class="d-flex flex-wrap justify-content-evenly" id="forecastWeather">
+        <div class="d-flex justify-content-evenly flex-wrap" id="forecastWeather">
     `);
-    var forecastWeatherEl = $("#forecastWeather");
     for (var i = 1; i < 6; i++) {
         forecastWeatherEl.append(`
-            <div class="bg-secondary col-12 col-md-2 p-2 m-1 text-center">
-            <p class="fw-bold mt-2" style="line-height:.25">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("EEEE")}</p>
-            <p class="fw-bold" style="line-height:.25">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("(M/d/yy)")}</p>
+            <div class="bg-secondary col-md-4 col-8 m-0 p-2 text-center">
+            <p class="fw-bold mt-1" style="line-height:.3">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("EEEE")}</p>
+            <p class="fw-bold" style="line-height:.3">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("(M/d/yy)")}</p>
             <img src="http://openweathermap.org/img/wn/${daily[i].weather[0].icon}.png">
             <p>${(daily[i].weather[0].description).charAt(0).toUpperCase() + (daily[i].weather[0].description).slice(1)}</p>
             <p><span class="text-warning">Hi: ${Math.round(daily[i].temp.max)}°F</span>, <span class="text-info">Lo: ${Math.round(daily[i].temp.min)}°F</span></p>
