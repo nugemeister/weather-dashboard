@@ -161,13 +161,20 @@ function printWeatherData(current, daily, timezone) {
     // Style output
     currentWeatherEl.addClass("border-light rounded border border-5 ");
     // Print to page
+
+    console.log(current.temp);
+
     currentWeatherEl.append(`
         <h2 class="text-center mb-md-8">${geoLocation} (${currentDate})</h2>
-        <h3 class="tex-center>Current Time: ${DateTime.fromSeconds(current.dt, {zone: timezone}).toFormat("h:mma")}</h3>
-        <div class="row justify-content-center">
-            <div class="col-auto">
+        <h3 class="text-center">Current Time: ${DateTime.fromSeconds(current.dt, {zone: timezone}).toFormat("h:mma")}</h3>
+        <div class="row justify-content-center align-text-center">
+            <div class="col-auto justify-content-center">
             <img src="http://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png">
-            <p>${currentWeatherDescription}</p>
+            <p class="justify-content-center">${currentWeatherDescription}</p>
+            <p>Current Temperature: ${Math.round(current.temp)}°F</p>
+            <p>Wind: ${Math.round(current.wind_speed)}mph</p>
+            <p>Humidity: ${current.humidity}%</p>
+            
         </div>
     `);
 
@@ -182,14 +189,15 @@ function printWeatherData(current, daily, timezone) {
     `);
     var forecastEl = $("#forecastWeather")
     for (var i = 1; i < 6; i++) {
+        console.log(i);
         forecastEl.append(`
-            <div class="bg-secondary col-md-4 col-8 m-0 p-2 text-center">
+            <div class="text-center bg-secondary col-14 col-md-6 p-2 m-1">
             <p class="fw-bold mt-1" style="line-height:.3">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("EEEE")}</p>
-            <p class="fw-bold" style="line-height:.3">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("(M/d/yy)")}</p>
+            <p class= style="line-height:.3">${DateTime.fromSeconds(daily[i].dt, {zone: timezone}).toFormat("(M/d/yy)")}</p>
             <img src="http://openweathermap.org/img/wn/${daily[i].weather[0].icon}.png">
             <p>${(daily[i].weather[0].description).charAt(0).toUpperCase() + (daily[i].weather[0].description).slice(1)}</p>
-            <p><span class="text-warning">Hi: ${Math.round(daily[i].temp.max)}°F</span>, <span class="text-info">Lo: ${Math.round(daily[i].temp.min)}°F</span></p>
-            <p>Wind: ${windDirection(daily[i].wind_deg)} at ${Math.round(daily[i].wind_speed)}mph</p>
+            <p><span class="text-warning">High: ${Math.round(daily[i].temp.max)}°F</span>, <span class="text-info">Low: ${Math.round(daily[i].temp.min)}°F</span></p>
+            <p>Wind: ${Math.round(daily[i].wind_speed)}mph</p>
             <p>Humidity: ${daily[i].humidity}%</p>
         `)
     }
